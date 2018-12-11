@@ -1,0 +1,58 @@
+{
+  "name": "aws-manage-sg",
+  "version": "0.0.0-development",
+  "description": "Manages the creation/deletion/updating of a user's current ip address in multiple AWS security groups",
+  "main": "index.js",
+  "scripts": {
+    "lint:markdown": "markdownlint src/**/*.md *.md",
+    "lint:source": "eslint .",
+    "lint": "npm run lint:source && npm run lint:markdown",
+    "semantic-release": "semantic-release",
+    "commit": "git-cz",
+    "travis-deploy-once": "travis-deploy-once"
+  },
+  "bin": {
+    "aws-manage-sg": "./index.js"
+  },
+  "preferGlobal": true,
+  "keywords": [
+    "aws",
+    "security",
+    "group"
+  ],
+  "author": "Niall McCullagh",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.373.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "timeout-as-promise": "^1.0.0",
+    "yargs": "^12.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-security": "^1.4.0",
+    "husky": "^1.2.0",
+    "semantic-release": "^15.12.4",
+    "commitizen": "^3.0.5",
+    "cz-conventional-changelog": "^2.1.0",
+    "markdownlint-cli": "^0.13.0",
+    "travis-deploy-once": "^5.0.9"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/niallmccullagh/aws-manage-sg-cli.git"
+  }
+}
