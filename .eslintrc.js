@@ -9,7 +9,6 @@ module.exports = {
     ],
     'extends': ['airbnb-base', 'plugin:security/recommended'],
     'rules': {
-        "no-console": "off",
         "security/detect-non-literal-fs-filename": "off",
         'no-restricted-syntax': [
             2,

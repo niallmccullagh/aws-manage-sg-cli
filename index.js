@@ -1,9 +1,5 @@
-#!/usr/local/bin/node
 const AWS = require('aws-sdk');
-const delay = require('timeout-as-promise');
-const fs = require('fs');
-const request = require('request-promise');
-const yargs = require('yargs');
+const debug = require('debug')('aws-manage-sg');
 
 function EC2(config) {
   const region = config.region || 'us-east-1';
@@ -44,7 +40,7 @@ async function revokePermission(config, securityGroupId, permission) {
     IpProtocol: permission.IpProtocol,
   };
 
-  console.log(`Revoking rule ${JSON.stringify(revokeParam)} on ${securityGroupId}`);
+  debug(`Revoking rule ${JSON.stringify(revokeParam)} on ${securityGroupId}`);
 
   return EC2(config).revokeSecurityGroupIngress({
     GroupId: securityGroupId,
@@ -52,15 +48,15 @@ async function revokePermission(config, securityGroupId, permission) {
   }).promise();
 }
 
-async function grantPermission(config, ipAddress, { securityGroupId, ports }) {
-  console.log(`Granting rule to ${securityGroupId} on ports ${ports} for IP ${ipAddress}`);
+async function grantPermission(config, { securityGroupId, ports }) {
+  debug(`Granting rule to ${securityGroupId} on ports ${ports} for IP ${config.ipAddress}`);
 
   const permissions = await ports.map((port) => {
     const p = parseInt(port, 10);
     return {
       IpRanges: [
         {
-          CidrIp: `${ipAddress}/32`,
+          CidrIp: `${config.ipAddress}/32`,
           Description: `${config.username}`,
         },
       ],
@@ -73,14 +69,14 @@ async function grantPermission(config, ipAddress, { securityGroupId, ports }) {
   return EC2(config).authorizeSecurityGroupIngress({
     GroupId: securityGroupId,
     IpPermissions: permissions,
-  }).promise();
+  })
+    .promise();
 }
 
-async function getIPAddress() {
-  const response = await request('http://checkip.amazonaws.com/');
-  return response.replace(/\s/g, '');
+function useAWSProfile(profile) {
+  const credentials = new AWS.SharedIniFileCredentials({ profile });
+  AWS.config.credentials = credentials;
 }
-
 
 async function revokePermissions(config) {
   const results = [];
@@ -94,64 +90,17 @@ async function revokePermissions(config) {
   return Promise.all(results);
 }
 
-function useAWSProfile(profile) {
-  const credentials = new AWS.SharedIniFileCredentials({ profile });
-  AWS.config.credentials = credentials;
+async function grantPermissions(config) {
+  const results = [];
+  for (const rule of config.rules) {
+    results.push(grantPermission(config, rule));
+  }
+
+  await Promise.all(results);
 }
 
-async function run(options, config) {
-  async function giveRevocationTimeToSet() {
-    await delay(1000);
-  }
-
-  function shouldRunByDefault() {
-    return !options.revoke && !options.grant;
-  }
-
-  const ipAddress = await getIPAddress();
-  const revoke = options.revoke || shouldRunByDefault();
-  const grant = options.grant || shouldRunByDefault();
-
-  if (options.profile) {
-    useAWSProfile(options.profile);
-  }
-
-  if (revoke) {
-    await revokePermissions(config);
-    await giveRevocationTimeToSet();
-  }
-
-  if (grant) {
-    const results = [];
-    for (const rule of config.rules) {
-      grantPermission(config, ipAddress, rule);
-    }
-    await Promise.all(results);
-  }
-}
-
-function getOptions() {
-  return yargs
-    .usage('Usage: $0 <command> [options]')
-    .alias('f', 'file')
-    .describe('f', 'Path to config file')
-    .alias('g', 'grant')
-    .describe('g', 'Run only the grant')
-    .alias('r', 'revoke')
-    .describe('r', 'Run only the revoke')
-    .alias('p', 'profile')
-    .describe('p', 'AWS profile to use')
-    .demandOption(['file'], 'Please provide a path to a config file')
-    .help('h').argv;
-}
-
-(async () => {
-  try {
-    const options = getOptions();
-    const config = JSON.parse(fs.readFileSync(options.file));
-    await run(options, config);
-  } catch (e) {
-    console.log(`ERROR: ${e.message}`);
-    process.exit(1);
-  }
-})();
+module.exports = {
+  revokePermissions,
+  grantPermissions,
+  useAWSProfile,
+};

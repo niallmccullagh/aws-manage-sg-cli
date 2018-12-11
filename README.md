@@ -56,3 +56,13 @@ Options:
   -p, --profile  AWS profile to use
   -h             Show help                                              [boolean]
 ```
+
+## Using in another application/library
+
+The library exports a number of functions:
+
+1. `revokePermissions`, revokes any permissions for the user in the supplied user groups
+1. `grantPermissions`, grants permissions for the user in the supplied ip and user groups
+1. `useAWSProfile`, configures the AWS authentication to use the supplied profile.
+
+See `bin/aws-manage-sg.js` for an example.

@@ -12,7 +12,7 @@
     "travis-deploy-once": "travis-deploy-once"
   },
   "bin": {
-    "aws-manage-sg": "./index.js"
+    "aws-manage-sg": "./bin/aws-manage-sg.js"
   },
   "preferGlobal": true,
   "keywords": [
@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.373.0",
+    "debug": "^4.1.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "timeout-as-promise": "^1.0.0",
