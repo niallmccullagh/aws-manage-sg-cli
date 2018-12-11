@@ -45,16 +45,21 @@ It revokes old rules, and grants new rules with the user's current ip address.
 Find out the full range of options by running `aws-manage-sg -h`
 
 ```bash
+
 $ aws-manage-sg -h
 Usage: aws-manage-sg [options]
 
 Options:
-  --version      Show version number                                    [boolean]
-  -f, --file     Path to config file                                   [required]
-  -g, --grant    Run only the grant
-  -r, --revoke   Run only the revoke
-  -p, --profile  AWS profile to use
-  -h             Show help                                              [boolean]
+  --version       Show version number                                  [boolean]
+  -f, --file      Path to config file                                 [required]
+  -g, --grant     Run only the grant                                   [boolean]
+  -r, --revoke    Run only the revoke                                  [boolean]
+  -p, --profile   AWS profile to use
+  -u, --username  Username to tag rules with
+  --ip            Use specified IP address. If not supplied the detected IP will
+                  be used
+  -h              Show help                                            [boolean]
+
 ```
 
 ## Using in another application/library

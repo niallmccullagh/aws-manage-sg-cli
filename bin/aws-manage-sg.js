@@ -15,11 +15,24 @@ async function getIPAddress() {
   return response.replace(/\s/g, '');
 }
 
-async function buildConfig(configFile) {
-  return {
+function validate(config) {
+  if (!config.username) {
+    throw new Error('Username not set in config');
+  }
+}
+
+async function buildConfig(options, configFile) {
+  const config = {
     ...configFile,
-    ipAddress: await getIPAddress(),
+    ipAddress: options.ip || await getIPAddress(),
   };
+
+  if (options.username) {
+    config.username = options.username;
+  }
+
+  validate(config);
+  return config;
 }
 
 async function run(options, config) {
@@ -55,10 +68,15 @@ function getOptions() {
     .describe('f', 'Path to config file')
     .alias('g', 'grant')
     .describe('g', 'Run only the grant')
+    .boolean('g')
     .alias('r', 'revoke')
     .describe('r', 'Run only the revoke')
+    .boolean('r')
     .alias('p', 'profile')
     .describe('p', 'AWS profile to use')
+    .alias('u', 'username')
+    .describe('u', 'Username to tag rules with')
+    .describe('ip', 'Use specified IP address. If not supplied the detected IP will be used')
     .demandOption(['file'], 'Please provide a path to a config file')
     .help('h').argv;
 }
@@ -71,7 +89,7 @@ function readConfigFile(path) {
   try {
     const options = getOptions();
     const config = readConfigFile(options.file);
-    await run(options, await buildConfig(config));
+    await run(options, await buildConfig(options, config));
   } catch (e) {
     debug(`ERROR: ${e.message}`);
     process.exit(1);
