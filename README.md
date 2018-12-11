@@ -1,5 +1,7 @@
 # AWS Security Group Manager
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/niallmccullagh/aws-manage-sg-cli.svg)](https://greenkeeper.io/)
+
 `aws-manage-sg` is a utility to manage multi security group rules for a remote worker.
 It revokes old rules, and grants new rules with the user's current ip address.
 
