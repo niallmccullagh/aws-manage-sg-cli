@@ -1,5 +1,8 @@
 # AWS Security Group Manager
 
+[![NPM version](https://badge.fury.io/js/aws-manage-sg.svg)](https://www.npmjs.com/package/aws-manage-sg)
+[![Build Status](https://travis-ci.org/niallmccullagh/aws-manage-sg-cli.svg?branch=master)](https://travis-ci.org/niallmccullagh/aws-manage-sg-cli)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![Greenkeeper badge](https://badges.greenkeeper.io/niallmccullagh/aws-manage-sg-cli.svg)](https://greenkeeper.io/)
 
 `aws-manage-sg` is a utility to manage multi security group rules for a remote worker.
