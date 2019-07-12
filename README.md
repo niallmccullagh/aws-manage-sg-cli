@@ -73,6 +73,6 @@ The library exports a number of functions:
 
 See `bin/aws-manage-sg.js` for an example.
 
-
 ## License
+
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fniallmccullagh%2Faws-manage-sg-cli.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fniallmccullagh%2Faws-manage-sg-cli?ref=badge_large)
