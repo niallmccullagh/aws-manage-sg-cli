@@ -32,14 +32,16 @@ It revokes old rules, and grants new rules with the user's current ip address.
  }
 ```
 
+* username is optional.
 * Install aws-manage-sg `npm install -g aws-manage-sg`
 * Run to remove old rules and whitelist new ip. `aws-manage-sg -f config.json`
 
 ## Notes
 
-* It is recommended to use the AWS username to ensure that users don't override each others settings
+* It is recommended to use the AWS username to ensure that users don't override each others settings. Username resolution happens in this order: command line argument, config file, AWS user, USER env property
 * By default the cli will try to authenticate using details from environment variables, to use a specific profile set the profile explicitly.
 * The AWS user must have the following permissions: `ec2:AuthorizeSecurityGroupIngress` and `ec2:DescribeSecurityGroups`
+* If checking in a shared config file, ensure that you have not set the username.
 
 ## Command Line
 
