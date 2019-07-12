@@ -4,11 +4,26 @@ const yargs = require('yargs');
 const delay = require('timeout-as-promise');
 const request = require('request-promise');
 const debugCore = require('debug');
+const AWS = require('aws-sdk');
 const { revokePermissions, grantPermissions, useAWSProfile } = require('../index');
 
 const debug = debugCore('aws-manage-sg-cli');
-
 debugCore.enable('aws-manage-sg*');
+
+async function getLoggedInUserName() {
+  const iam = new AWS.IAM({ apiVersion: '2010-05-08' });
+  try {
+    const loggedInUser = await iam.getUser({}).promise();
+    return loggedInUser.User.UserName;
+  } catch (e) {
+    debug(`Error determining AWS username: ${e.message}`);
+  }
+  return undefined;
+}
+
+function usernameFromEnv() {
+  return process.env.USER;
+}
 
 async function getIPAddress() {
   const response = await request('http://checkip.amazonaws.com/');
@@ -25,11 +40,11 @@ async function buildConfig(options, configFile) {
   const config = {
     ...configFile,
     ipAddress: options.ip || await getIPAddress(),
+    username: options.username
+      || configFile.username
+      || await getLoggedInUserName()
+      || usernameFromEnv(),
   };
-
-  if (options.username) {
-    config.username = options.username;
-  }
 
   validate(config);
   return config;
@@ -75,7 +90,7 @@ function getOptions() {
     .alias('p', 'profile')
     .describe('p', 'AWS profile to use')
     .alias('u', 'username')
-    .describe('u', 'Username to tag rules with')
+    .describe('u', 'Username to tag rules with. If not supplied the detected username will be used')
     .describe('ip', 'Use specified IP address. If not supplied the detected IP will be used')
     .demandOption(['file'], 'Please provide a path to a config file')
     .help('h').argv;

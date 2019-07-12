@@ -49,7 +49,7 @@ async function revokePermission(config, securityGroupId, permission) {
 }
 
 async function grantPermission(config, { securityGroupId, ports }) {
-  debug(`Granting rule to ${securityGroupId} on ports ${ports} for IP ${config.ipAddress}`);
+  debug(`Granting rule to ${securityGroupId} on ports ${ports} for IP ${config.ipAddress} tagged with user ${config.username}`);
 
   const permissions = await ports.map((port) => {
     const p = parseInt(port, 10);
