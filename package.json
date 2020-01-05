@@ -38,7 +38,7 @@
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-security": "^1.4.0",
     "husky": "^2.7.0",
-    "markdownlint-cli": "^0.17.0",
+    "markdownlint-cli": "^0.21.0",
     "semantic-release": "^15.13.18",
     "travis-deploy-once": "^5.0.11"
   },
