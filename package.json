@@ -23,23 +23,23 @@
   "author": "Niall McCullagh",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.492.0",
+    "aws-sdk": "^2.605.0",
     "debug": "^4.1.1",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4",
+    "request-promise": "^4.2.5",
     "timeout-as-promise": "^1.0.0",
-    "yargs": "^13.2.4"
+    "yargs": "^13.3.0"
   },
   "devDependencies": {
-    "commitizen": "^3.1.1",
-    "cz-conventional-changelog": "^2.1.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.0",
+    "commitizen": "^4.0.3 ",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-security": "^1.4.0",
-    "husky": "^2.7.0",
-    "markdownlint-cli": "^0.17.0",
-    "semantic-release": "^15.13.18",
+    "husky": "^4.0.10",
+    "markdownlint-cli": "^0.21.0",
+    "semantic-release": "^16.0.2",
     "travis-deploy-once": "^5.0.11"
   },
   "husky": {
