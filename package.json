@@ -25,7 +25,7 @@
   "dependencies": {
     "aws-sdk": "^2.605.0",
     "debug": "^4.1.1",
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "timeout-as-promise": "^1.0.0",
     "yargs": "^13.3.0"
